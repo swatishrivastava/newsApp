@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/headlines"
+        android:id="@+id/headlinesFragment"
         android:title="@string/headlines" />
     <item
-        android:id="@+id/sources"
+        android:id="@+id/sourceFragment"
         android:title="@string/sources" />
     <item
-        android:id="@+id/saved"
+        android:id="@+id/savedArticleFragment"
         android:title="@string/saved_articles" />
 </menu>
