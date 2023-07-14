@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".sources.views.SourceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sources_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Sources" />
-
+        android:layout_margin="@dimen/_10dp"/>
 </FrameLayout>
