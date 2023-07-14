@@ -1,6 +1,10 @@
 package com.android.newsapp.di
 
+import com.android.newsapp.headlines.network.HeadlinesApi
+import com.android.newsapp.headlines.repo.HeadlinesRepo
+import com.android.newsapp.headlines.repo.IHeadlinesRepo
 import com.android.newsapp.sources.network.SourceApi
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +26,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(newsAuthenticator: NewsAuthenticator) :OkHttpClient{
+    fun provideOkHttpClient(newsAuthenticator: NewsAuthenticator): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient
@@ -44,5 +48,12 @@ object NetworkModule {
     @Singleton
     fun provideSourceApiService(retrofit: Retrofit): SourceApi =
         retrofit.create(SourceApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHeadlinesApiService(retrofit: Retrofit): HeadlinesApi =
+        retrofit.create(HeadlinesApi::class.java)
+
+
 
 }

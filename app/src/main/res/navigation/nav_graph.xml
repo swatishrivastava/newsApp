@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_headlines" />
     <fragment
         android:id="@+id/sourceFragment"
-        android:name="com.android.newsapp.sources.SourceFragment"
+        android:name="com.android.newsapp.sources.views.SourceFragment"
         android:label="@string/sources"
         tools:layout="@layout/fragment_source" />
     <fragment

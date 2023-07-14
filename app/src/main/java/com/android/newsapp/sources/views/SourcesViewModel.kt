@@ -1,4 +1,4 @@
-package com.android.newsapp.sources
+package com.android.newsapp.sources.views
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.newsapp.Resource
 import com.android.newsapp.sources.domain.NewsSources
 import com.android.newsapp.sources.network.Source
+import com.android.newsapp.sources.repo.ISourceRepo
 import com.android.newsapp.sources.repo.SourceRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class SourcesViewModel @Inject constructor(private val repo: SourceRepo) : ViewModel() {
+class SourcesViewModel @Inject constructor(private val repo: ISourceRepo) : ViewModel() {
 
     private val _sourceLiveData: MutableLiveData<Resource<List<NewsSources>>> = MutableLiveData()
     val sourceLiveData: LiveData<Resource<List<NewsSources>>> = _sourceLiveData
