@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".headlines.HeadlinesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/headlines_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Headlines" />
+        android:layout_margin="@dimen/_10dp"/>
 
 </FrameLayout>

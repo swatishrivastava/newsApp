@@ -37,7 +37,8 @@ class SourceFragment : Fragment() {
     private fun handleUI(it: Resource<List<NewsSources>>?) {
         when (it) {
             is Resource.ResourceSuccess -> {
-                sources_list.adapter = SourceAdapter(it.data, arrOfSources)
+                adapter = SourceAdapter(it.data, arrOfSources)
+                sources_list.adapter = adapter
                 handleSourceClick()
             }
 
