@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".sources.views.SourceFragment">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sources_list"
         android:layout_width="match_parent"
