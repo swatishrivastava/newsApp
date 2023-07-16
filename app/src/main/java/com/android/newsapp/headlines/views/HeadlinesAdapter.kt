@@ -1,5 +1,6 @@
 package com.android.newsapp.headlines.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -31,15 +32,23 @@ class HeadlinesAdapter(
         return listOfHeadlines.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.binding) {
-            headlineLayout.setOnClickListener { onClickListener?.onClick(listOfHeadlines[position].url?:"") }
+            headlineLayout.setOnClickListener {
+                onClickListener?.onClick(
+                    listOfHeadlines[position].url ?: ""
+                )
+            }
             articleTitle.text = listOfHeadlines[position].title
             articleDescription.text = listOfHeadlines[position].description
-            articleAuthor.text = listOfHeadlines[position].author
-            readLaterText.setOnClickListener { onClickListener?.saveLater(listOfHeadlines[position]) }
+            articleAuthor.text =
+                context.getString(R.string.author_text) + " " + listOfHeadlines[position].author
+            readLater.setOnClickListener { onClickListener?.saveLater(listOfHeadlines[position]) }
             Glide.with(context)
                 .load(listOfHeadlines[position].pic)
+                .placeholder(R.drawable.news_default)
+                .centerCrop()
                 .into(articleImage);
 
         }

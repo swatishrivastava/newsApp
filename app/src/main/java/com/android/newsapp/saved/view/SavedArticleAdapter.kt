@@ -33,13 +33,18 @@ class SavedArticleAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.binding) {
-            headlineLayout.setOnClickListener { onClickListener?.onClick(listOfHeadlines[position].url?:"") }
+            headlineLayout.setOnClickListener {
+                onClickListener?.onClick(
+                    listOfHeadlines[position].url ?: ""
+                )
+            }
             articleTitle.text = listOfHeadlines[position].title
             articleDescription.text = listOfHeadlines[position].description
             articleAuthor.text = listOfHeadlines[position].author
             deleteArticle.setOnClickListener { onClickListener?.onDeleteArticle(listOfHeadlines[position]) }
             Glide.with(context)
                 .load(listOfHeadlines[position].pic)
+                .placeholder(R.drawable.news_default)
                 .into(articleImage);
 
         }
