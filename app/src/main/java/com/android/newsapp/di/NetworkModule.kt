@@ -21,8 +21,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Provides
-    fun provideBaseUrl() = "https://newsapi.org/"
 
     @Singleton
     @Provides
@@ -38,7 +36,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("https://newsapi.org/")
         .client(okHttpClient)
@@ -53,7 +51,4 @@ object NetworkModule {
     @Singleton
     fun provideHeadlinesApiService(retrofit: Retrofit): HeadlinesApi =
         retrofit.create(HeadlinesApi::class.java)
-
-
-
 }

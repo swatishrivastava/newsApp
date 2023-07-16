@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.newsapp.NewsActivity
 import com.android.newsapp.R
-import com.android.newsapp.Resource
+import com.android.newsapp.utils.Resource
 import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.android.newsapp.utils.HEADLINE_URL
 import com.android.newsapp.utils.getNewsFromNewsHeadlines

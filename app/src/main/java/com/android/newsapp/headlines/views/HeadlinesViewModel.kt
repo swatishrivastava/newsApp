@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.newsapp.Resource
+import com.android.newsapp.utils.Resource
 import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.android.newsapp.headlines.network.Article
 import com.android.newsapp.headlines.repo.IHeadlinesRepo

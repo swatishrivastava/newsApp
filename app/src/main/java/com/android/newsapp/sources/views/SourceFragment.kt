@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.newsapp.NewsActivity
 import com.android.newsapp.R
-import com.android.newsapp.Resource
+import com.android.newsapp.utils.Resource
 import com.android.newsapp.sources.domain.NewsSources
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.news_fragment_layout.error_textView
@@ -38,9 +38,7 @@ class SourceFragment : Fragment() {
             }
 
             is Resource.ResourceError -> {
-                news_progressBar.visibility = View.GONE
-                error_textView.visibility = View.VISIBLE
-                error_textView.text = getString(R.string.source_error)
+                updateErrorUi()
             }
 
             is Resource.ResourceLoading -> {
@@ -49,6 +47,12 @@ class SourceFragment : Fragment() {
 
             else -> {}
         }
+    }
+
+    private fun updateErrorUi() {
+        news_progressBar.visibility = View.GONE
+        error_textView.visibility = View.VISIBLE
+        error_textView.text = getString(R.string.source_error)
     }
 
     override fun onCreateView(

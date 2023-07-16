@@ -1,4 +1,4 @@
-package com.android.newsapp
+package com.android.newsapp.utils
 
 sealed class Resource<out T> {
     data class ResourceSuccess<out T>(val data: T) : Resource<T>()
