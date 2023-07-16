@@ -1,4 +1,4 @@
-package com.android.newsapp.headlines
+package com.android.newsapp.headlines.domain
 
 import java.util.UUID
 

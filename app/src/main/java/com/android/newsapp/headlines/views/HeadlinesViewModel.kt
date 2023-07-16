@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.newsapp.Resource
-import com.android.newsapp.headlines.NewsHeadlines
+import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.android.newsapp.headlines.network.Article
 import com.android.newsapp.headlines.repo.IHeadlinesRepo
 import com.android.newsapp.saved.repo.News
 import com.android.newsapp.saved.repo.NewsDao
+import com.android.newsapp.utils.DEFAULT_SOURCE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,14 +20,13 @@ class HeadlinesViewModel @Inject constructor(
     private val repo: IHeadlinesRepo,
     private val newsDao: NewsDao
 ) : ViewModel() {
-
     private val _headlinesLiveData: MutableLiveData<Resource<List<NewsHeadlines>>> =
         MutableLiveData()
     val headlinesLiveData: LiveData<Resource<List<NewsHeadlines>>> = _headlinesLiveData
     fun getHeadlines(sources: String) {
         _headlinesLiveData.value = Resource.ResourceLoading()
         viewModelScope.launch {
-            val response = repo.getHeadlines(sources)
+            val response = repo.getHeadlines(getNewsSource(sources))
             if (response.isSuccessful) {
                 response.body()?.let {
                     _headlinesLiveData.value =
@@ -40,6 +39,13 @@ class HeadlinesViewModel @Inject constructor(
         }
     }
 
+    private fun getNewsSource(sources: String): String {
+        var newsSource = ""
+        sources.ifEmpty {
+            DEFAULT_SOURCE
+        }.also { newsSource = it }
+        return newsSource
+    }
 
     private fun getNewsHeadlines(articles: List<Article>): List<NewsHeadlines> {
         val listOfheadlines = mutableListOf<NewsHeadlines>()
@@ -61,6 +67,5 @@ class HeadlinesViewModel @Inject constructor(
         viewModelScope.launch {
             newsDao.insertNews(news)
         }
-
     }
 }

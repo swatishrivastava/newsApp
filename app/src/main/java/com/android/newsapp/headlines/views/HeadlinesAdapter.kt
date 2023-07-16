@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.newsapp.R
 import com.android.newsapp.databinding.HeadlinesListItemBinding
-import com.android.newsapp.headlines.NewsHeadlines
+import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.bumptech.glide.Glide
 
 class HeadlinesAdapter(

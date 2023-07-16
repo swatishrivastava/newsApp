@@ -1,6 +1,6 @@
 package com.android.newsapp.utils
 
-import com.android.newsapp.headlines.NewsHeadlines
+import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.android.newsapp.saved.repo.News
 
 fun getNewsFromNewsHeadlines(newsHeadlines: NewsHeadlines): News {

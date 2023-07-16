@@ -1,6 +1,5 @@
 package com.android.newsapp.sources.views
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,16 +10,13 @@ import com.android.newsapp.sources.network.Source
 import com.android.newsapp.sources.repo.ISourceRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class SourcesViewModel @Inject constructor(private val repo: ISourceRepo) : ViewModel() {
-
     private val _sourceLiveData: MutableLiveData<Resource<List<NewsSources>>> = MutableLiveData()
     val sourceLiveData: LiveData<Resource<List<NewsSources>>> = _sourceLiveData
     fun getSources() {
-        Log.d("test", " I am inside source viewmodel class  ")
         viewModelScope.launch {
             val res = repo.getAllSources()
             if (res.isSuccessful) {

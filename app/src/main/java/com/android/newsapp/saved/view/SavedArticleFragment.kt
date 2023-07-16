@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.newsapp.utils.HEADLINE_URL
 import com.android.newsapp.R
-import com.android.newsapp.headlines.NewsHeadlines
+import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
 import com.android.newsapp.utils.getNewsHeadlinesFromNews
 import dagger.hilt.android.AndroidEntryPoint

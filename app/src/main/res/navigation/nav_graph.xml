@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/headlinesFragment"
-        android:name="com.android.newsapp.headlines.HeadlinesFragment"
+        android:name="com.android.newsapp.headlines.views.HeadlinesFragment"
         android:label="@string/headlines"
         tools:layout="@layout/news_list" />
     <fragment

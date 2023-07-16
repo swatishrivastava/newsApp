@@ -1,4 +1,4 @@
-package com.android.newsapp.headlines
+package com.android.newsapp.headlines.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,20 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.newsapp.NewsActivity
 import com.android.newsapp.R
 import com.android.newsapp.Resource
-import com.android.newsapp.headlines.views.HeadlinesAdapter
-import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
-import com.android.newsapp.headlines.views.HeadlinesViewModel
+import com.android.newsapp.headlines.domain.NewsHeadlines
 import com.android.newsapp.utils.HEADLINE_URL
 import com.android.newsapp.utils.getNewsFromNewsHeadlines
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.news_fragment_layout.news_progressBar
 
-
 @AndroidEntryPoint
 class HeadlinesFragment : Fragment() {
     private val viewModel: HeadlinesViewModel by viewModels()
     private lateinit var headlinesAdapter: HeadlinesAdapter
-    private lateinit var error_textview: TextView
+    private lateinit var errorTextview: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +33,7 @@ class HeadlinesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.news_fragment_layout, container, false)
         val recyclerView = view.rootView.findViewById<RecyclerView>(R.id.news_list)
-        error_textview = view.rootView.findViewById(R.id.error_textView)
+        errorTextview = view.rootView.findViewById(R.id.error_textView)
         initializeList(recyclerView)
         handleHeadlineClick()
         return view
@@ -45,19 +42,15 @@ class HeadlinesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.getHeadlines(getSourceWhenNoSourceSelected())
+        viewModel.getHeadlines(getSelectedSources())
         viewModel.headlinesLiveData.observe(this) {
             when (it) {
                 is Resource.ResourceSuccess -> {
-                    news_progressBar.visibility = View.GONE
-                    headlinesAdapter.updateHeadlines(it.data)
+                    updateSuccessUi(it)
                 }
-
                 is Resource.ResourceError -> {
-                    news_progressBar.visibility = View.GONE
-                    error_textview.visibility = View.VISIBLE
+                    updateErrorUi()
                 }
-
                 is Resource.ResourceLoading -> {
                     news_progressBar.visibility = View.VISIBLE
                 }
@@ -65,8 +58,18 @@ class HeadlinesFragment : Fragment() {
         }
     }
 
+    private fun updateSuccessUi(it: Resource.ResourceSuccess<List<NewsHeadlines>>) {
+        news_progressBar.visibility = View.GONE
+        headlinesAdapter.updateHeadlines(it.data)
+    }
 
-    private fun getSourceWhenNoSourceSelected(): String {
+    private fun updateErrorUi() {
+        news_progressBar.visibility = View.GONE
+        errorTextview.visibility = View.VISIBLE
+    }
+
+
+    private fun getSelectedSources(): String {
         var sourceStr = ""
         (activity as NewsActivity).sourceArray.forEach {
             sourceStr = "$sourceStr,$it"

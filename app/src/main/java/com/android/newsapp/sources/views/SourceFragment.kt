@@ -16,8 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.news_fragment_layout.error_textView
 import kotlinx.android.synthetic.main.news_fragment_layout.news_list
 import kotlinx.android.synthetic.main.news_fragment_layout.news_progressBar
-
-
 @AndroidEntryPoint
 class SourceFragment : Fragment() {
     private val viewModel: SourcesViewModel by viewModels()
