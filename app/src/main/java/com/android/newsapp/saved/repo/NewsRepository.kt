@@ -11,4 +11,8 @@ class NewsRepository @Inject constructor(private val newsDao: NewsDao) {
     suspend fun insert(news: News) {
         newsDao.insertNews(news)
     }
+
+    suspend fun delete(news: News) {
+        newsDao.delete(news)
+    }
 }

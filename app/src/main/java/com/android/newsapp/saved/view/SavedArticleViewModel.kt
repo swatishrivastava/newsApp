@@ -1,4 +1,4 @@
-package com.android.newsapp.saved
+package com.android.newsapp.saved.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,6 +27,21 @@ class SavedArticleViewModel @Inject constructor(
 ) : ViewModel() {
     val savedHeadlinesLiveData: LiveData<List<News>> = newsRepository.savedNews.asLiveData()
 
+    fun deleteNews(newsHeadlines: NewsHeadlines) {
+        val news = News(
+            newsHeadlines.id,
+            newsHeadlines.title,
+            newsHeadlines.description,
+            newsHeadlines.author,
+            newsHeadlines.pic,
+            newsHeadlines.url
+        )
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                newsRepository.delete(news)
+            }
+        }
+    }
 
 
 }

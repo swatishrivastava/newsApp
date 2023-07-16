@@ -68,16 +68,18 @@ class SourceFragment : Fragment() {
     }
 
     private fun handleSourceClick() {
+        val newList = mutableListOf<String>()
+        newList.addAll(arrOfSources.toSet())
         adapter.setOnClickListener(object :
             SourceAdapter.OnClickListener {
             override fun onClick(sourceId: String, isSelected: Boolean) {
                 if (isSelected) {
-                    arrOfSources.add(sourceId)
+                    newList.add(sourceId)
                 } else {
-                    arrOfSources.remove(sourceId)
+                    newList.remove(sourceId)
                 }
                 with(sharedPref.edit()) {
-                    this?.putStringSet(SELECTED_SOURCES, arrOfSources.toSet())
+                    this?.putStringSet(SELECTED_SOURCES, newList.toSet())
                     this?.apply()
                 }
             }

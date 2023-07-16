@@ -25,6 +25,7 @@ class HeadlinesViewModel @Inject constructor(
         MutableLiveData()
     val headlinesLiveData: LiveData<Resource<List<NewsHeadlines>>> = _headlinesLiveData
     fun getHeadlines(sources: String) {
+        _headlinesLiveData.value = Resource.ResourceLoading()
         viewModelScope.launch {
             val response = repo.getHeadlines(sources)
             if (response.isSuccessful) {

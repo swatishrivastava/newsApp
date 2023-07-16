@@ -1,19 +1,21 @@
-package com.android.newsapp.saved
+package com.android.newsapp.saved.view
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.newsapp.HEADLINE_URL
 import com.android.newsapp.R
-import com.android.newsapp.Resource
 import com.android.newsapp.headlines.NewsHeadlines
 import com.android.newsapp.headlines.views.HeadlinesAdapter
-import com.android.newsapp.headlines.views.HeadlinesViewModel
+import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
+import com.android.newsapp.saved.repo.News
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_headlines.headlines_list
 
@@ -21,10 +23,7 @@ import kotlinx.android.synthetic.main.fragment_headlines.headlines_list
 @AndroidEntryPoint
 class SavedArticleFragment : Fragment() {
     private val viewModel: SavedArticleViewModel by viewModels()
-    private lateinit var adapter: HeadlinesAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var savedadapter: SavedArticleAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +52,9 @@ class SavedArticleFragment : Fragment() {
                     )
                 )
             }
-            adapter = HeadlinesAdapter(requireContext(), list)
-            headlines_list.adapter = adapter
+            savedadapter = SavedArticleAdapter(requireContext(), list)
+            headlines_list.adapter = savedadapter
+            handleNewsClick()
 
         }
     }
@@ -69,6 +69,25 @@ class SavedArticleFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(divider)
         }
+    }
+
+    private fun handleNewsClick() {
+        savedadapter.setOnClickListener(object :
+            SavedArticleAdapter.OnClickListener {
+            override fun onClick(url: String) {
+                val bundle = Bundle()
+                bundle.putString(HEADLINE_URL, url)
+                val intent = Intent(requireContext(), HeadlinesDetailsActivity::class.java)
+                intent.putExtras(bundle)
+                requireActivity().startActivity(intent)
+            }
+
+            override fun onDeleteArticle(news: NewsHeadlines) {
+                viewModel.deleteNews(news)
+            }
+
+
+        })
     }
 
 }

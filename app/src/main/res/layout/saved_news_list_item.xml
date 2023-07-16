@@ -24,7 +24,7 @@
         android:maxLines="1"
         android:text="John Doe  ghahfvsgjbkhgfdchfjgkgghfgdfsshjghghfgdfhjgkgfhgdfhfjkfhdgfhjg"
         android:textStyle="bold"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="250dp"
 
         app:layout_constraintBottom_toTopOf="@+id/article_author"
         app:layout_constraintEnd_toStartOf="@+id/article_description"
@@ -41,7 +41,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="John Doe  ghahfvsgjbkhgfdchfjgkgghfgdfsshjghghfgdfhjgkgfhgdfhfjkfhdgfhjg"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="250dp"
         app:layout_constraintBottom_toTopOf="@+id/article_author"
         app:layout_constraintStart_toEndOf="@+id/article_image"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,18 +63,15 @@
         app:layout_constraintStart_toEndOf="@+id/article_image"
         app:layout_constraintTop_toBottomOf="@+id/article_title" />
 
-    <TextView
-        android:id="@+id/read_later_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Read later"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/delete_article"
+        android:layout_width="26dp"
+        android:layout_height="80dp"
+        android:src="@drawable/bin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.742"
-        app:layout_constraintStart_toEndOf="@+id/article_author"
-        app:layout_constraintTop_toTopOf="@+id/article_author"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/article_description"
+        app:layout_constraintTop_toTopOf="@+id/article_title" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

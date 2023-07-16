@@ -1,33 +1,29 @@
-package com.android.newsapp.headlines.views
+package com.android.newsapp.saved.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.newsapp.R
-import com.android.newsapp.databinding.HeadlinesListItemBinding
-import com.android.newsapp.databinding.SourceListItemBinding
+import com.android.newsapp.databinding.SavedNewsListItemBinding
 import com.android.newsapp.headlines.NewsHeadlines
-import com.android.newsapp.sources.domain.NewsSources
 import com.bumptech.glide.Glide
-import okhttp3.internal.notify
 
-class HeadlinesAdapter(
+class SavedArticleAdapter(
     private val context: Context,
     private var listOfHeadlines: List<NewsHeadlines>,
-) : RecyclerView.Adapter<HeadlinesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SavedArticleAdapter.ViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var binding = HeadlinesListItemBinding.bind(view)
+        var binding = SavedNewsListItemBinding.bind(view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.headlines_list_item, parent, false)
+            .inflate(R.layout.saved_news_list_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,7 +37,7 @@ class HeadlinesAdapter(
             articleTitle.text = listOfHeadlines[position].title
             articleDescription.text = listOfHeadlines[position].description
             articleAuthor.text = listOfHeadlines[position].author
-            readLaterText.setOnClickListener { onClickListener?.saveLater(listOfHeadlines[position]) }
+            deleteArticle.setOnClickListener { onClickListener?.onDeleteArticle(listOfHeadlines[position]) }
             Glide.with(context)
                 .load(listOfHeadlines[position].pic)
                 .into(articleImage);
@@ -51,7 +47,7 @@ class HeadlinesAdapter(
 
     interface OnClickListener {
         fun onClick(url: String)
-        fun saveLater(news: NewsHeadlines)
+        fun onDeleteArticle(newsHeadlines: NewsHeadlines)
     }
 
     fun setOnClickListener(onClickListener: OnClickListener) {
@@ -66,10 +62,4 @@ class HeadlinesAdapter(
         return position
     }
 
-    fun updateHeadlines(newHeadlines: List<NewsHeadlines>) {
-        listOfHeadlines = newHeadlines
-        notifyDataSetChanged()
-
-    }
 }
-

@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,12 +20,9 @@ import com.android.newsapp.headlines.views.HeadlinesAdapter
 import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
 import com.android.newsapp.headlines.views.HeadlinesViewModel
 import com.android.newsapp.saved.repo.News
-import com.android.newsapp.sources.views.SourceAdapter
-import com.android.newsapp.sources.views.SourcesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_headlines.headlines_list
-import kotlinx.android.synthetic.main.fragment_source.sources_list
-import kotlin.random.Random
+import kotlinx.android.synthetic.main.fragment_headlines.headlines_progressBar
 
 
 @AndroidEntryPoint
@@ -32,24 +31,24 @@ class HeadlinesFragment : Fragment() {
     private lateinit var sharedPref: SharedPreferences
     private lateinit var arrOfSources: MutableSet<String>
     private var sourcesStr: String = ""
-    private lateinit var adapter: HeadlinesAdapter
+    private lateinit var headlinesAdapter: HeadlinesAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
+        headlinesAdapter = HeadlinesAdapter(requireContext(), emptyList())
+    }
+
+    override fun onStart() {
+        super.onStart()
         arrOfSources = sharedPref.getStringSet(SELECTED_SOURCES, emptySet())!!
-        if (arrOfSources.isEmpty()) {
-            sourcesStr = "bbc-news"
-        } else {
-            arrOfSources.forEach {
-                sourcesStr = "$sourcesStr,$it"
-            }
-        }
+        getSourceWhenNoSourceSelected()
         viewModel.getHeadlines(sourcesStr)
         viewModel.headlinesLiveData.observe(this) {
             when (it) {
                 is Resource.ResourceSuccess -> {
-                    adapter = HeadlinesAdapter(requireContext(), it.data)
-                    headlines_list.adapter = adapter
+                    Log.d("test", "*************** onsucces of headlines")
+                    headlines_progressBar.visibility = View.GONE
+                    headlinesAdapter.updateHeadlines(it.data)
                     handleHeadlineClick()
                 }
 
@@ -58,8 +57,19 @@ class HeadlinesFragment : Fragment() {
                 }
 
                 is Resource.ResourceLoading -> {
-
+                    headlines_progressBar.visibility = View.VISIBLE
                 }
+            }
+        }
+    }
+
+    private fun getSourceWhenNoSourceSelected() {
+        if (arrOfSources.isEmpty()) {
+            sourcesStr = "bbc-news"
+        } else {
+            arrOfSources.toSet()
+            arrOfSources.forEach {
+                sourcesStr = "$sourcesStr,$it"
             }
         }
     }
@@ -87,11 +97,12 @@ class HeadlinesFragment : Fragment() {
             )
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(divider)
+            headlines_list.adapter = headlinesAdapter
         }
     }
 
     private fun handleHeadlineClick() {
-        adapter.setOnClickListener(object :
+        headlinesAdapter.setOnClickListener(object :
             HeadlinesAdapter.OnClickListener {
             override fun onClick(url: String) {
                 val bundle = Bundle()
@@ -102,10 +113,11 @@ class HeadlinesFragment : Fragment() {
             }
 
             override fun saveLater(news: NewsHeadlines) {
+                Toast.makeText(activity, getString(R.string.read_article_later), Toast.LENGTH_LONG)
+                    .show()
                 viewModel.saveNewsToReadLater(
                     News(
-                        Random.nextInt(),
-                        news.title,
+                        news.id, news.title,
                         news.description,
                         news.author,
                         news.pic,

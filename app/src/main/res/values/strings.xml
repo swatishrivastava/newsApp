@@ -6,4 +6,5 @@
     <string name="sources">Sources</string>
     <string name="saved_articles">Saved</string>
     <string name="save_later">Read later</string>
+    <string name="read_article_later">"Your article saved to read later"</string>
 </resources>
