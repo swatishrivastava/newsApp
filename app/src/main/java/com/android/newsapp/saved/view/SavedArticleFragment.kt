@@ -13,6 +13,7 @@ import com.android.newsapp.utils.HEADLINE_URL
 import com.android.newsapp.R
 import com.android.newsapp.headlines.NewsHeadlines
 import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
+import com.android.newsapp.utils.getNewsHeadlinesFromNews
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.news_fragment_layout.news_list
 
@@ -40,13 +41,7 @@ class SavedArticleFragment : Fragment() {
             val list = mutableListOf<NewsHeadlines>()
             it.forEach {
                 list.add(
-                    NewsHeadlines(
-                        it.title,
-                        it.description,
-                        it.author,
-                        it.pic,
-                        it.url
-                    )
+                    getNewsHeadlinesFromNews(it)
                 )
             }
             savedadapter = SavedArticleAdapter(requireContext(), list)

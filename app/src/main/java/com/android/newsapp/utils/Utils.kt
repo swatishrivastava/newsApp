@@ -13,3 +13,14 @@ fun getNewsFromNewsHeadlines(newsHeadlines: NewsHeadlines): News {
         newsHeadlines.url ?: ""
     )
 }
+
+
+fun getNewsHeadlinesFromNews(news: News): NewsHeadlines {
+    return NewsHeadlines(
+        title = news.title,
+        description = news.description,
+        author = news.author,
+        pic = news.pic,
+        url = news.url
+    )
+}
