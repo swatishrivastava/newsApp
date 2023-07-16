@@ -1,6 +1,5 @@
 package com.android.newsapp.headlines.views
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.newsapp.R
 import com.android.newsapp.databinding.HeadlinesListItemBinding
-import com.android.newsapp.databinding.SourceListItemBinding
 import com.android.newsapp.headlines.NewsHeadlines
-import com.android.newsapp.sources.domain.NewsSources
 import com.bumptech.glide.Glide
-import okhttp3.internal.notify
 
 class HeadlinesAdapter(
     private val context: Context,
@@ -67,6 +63,7 @@ class HeadlinesAdapter(
     }
 
     fun updateHeadlines(newHeadlines: List<NewsHeadlines>) {
+        listOfHeadlines = emptyList()
         listOfHeadlines = newHeadlines
         notifyDataSetChanged()
 

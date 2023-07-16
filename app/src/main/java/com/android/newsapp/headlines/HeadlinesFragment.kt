@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.newsapp.HEADLINE_URL
 import com.android.newsapp.R
 import com.android.newsapp.Resource
 import com.android.newsapp.SELECTED_SOURCES
@@ -35,8 +37,18 @@ class HeadlinesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
-        headlinesAdapter = HeadlinesAdapter(requireContext(), emptyList())
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_headlines, container, false)
+        val recyclerView = view.rootView.findViewById<RecyclerView>(R.id.headlines_list)
+        initializeList(recyclerView)
+        return view
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -63,41 +75,31 @@ class HeadlinesFragment : Fragment() {
         }
     }
 
+
     private fun getSourceWhenNoSourceSelected() {
-        if (arrOfSources.isEmpty()) {
-            sourcesStr = "bbc-news"
-        } else {
+        Log.d("test", "****** sources: "+arrOfSources)
+//        if (arrOfSources.isEmpty()) {
+//            sourcesStr = "bbc-news"
+//        } else {
             arrOfSources.toSet()
             arrOfSources.forEach {
                 sourcesStr = "$sourcesStr,$it"
             }
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_headlines, container, false)
+//        }
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initializeList()
-
-    }
-
-    private fun initializeList() {
+    private fun initializeList(headlines_list:RecyclerView) {
         with(headlines_list) {
+            layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
             val divider = DividerItemDecoration(
                 context,
                 LinearLayoutManager(context).orientation
             )
-            layoutManager = LinearLayoutManager(activity)
             addItemDecoration(divider)
-            headlines_list.adapter = headlinesAdapter
+            headlinesAdapter = HeadlinesAdapter(requireContext(), emptyList())
+            adapter = headlinesAdapter
         }
     }
 
@@ -106,7 +108,7 @@ class HeadlinesFragment : Fragment() {
             HeadlinesAdapter.OnClickListener {
             override fun onClick(url: String) {
                 val bundle = Bundle()
-                bundle.putString("headlineUrl", url)
+                bundle.putString(HEADLINE_URL, url)
                 val intent = Intent(requireContext(), HeadlinesDetailsActivity::class.java)
                 intent.putExtras(bundle)
                 requireActivity().startActivity(intent)
