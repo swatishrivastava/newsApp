@@ -8,13 +8,18 @@ import com.android.newsapp.Resource
 import com.android.newsapp.headlines.NewsHeadlines
 import com.android.newsapp.headlines.network.Article
 import com.android.newsapp.headlines.repo.IHeadlinesRepo
+import com.android.newsapp.saved.repo.News
+import com.android.newsapp.saved.repo.NewsDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class HeadlinesViewModel @Inject constructor(private val repo: IHeadlinesRepo) : ViewModel() {
+class HeadlinesViewModel @Inject constructor(
+    private val repo: IHeadlinesRepo,
+    private val newsDao: NewsDao
+) : ViewModel() {
 
     private val _headlinesLiveData: MutableLiveData<Resource<List<NewsHeadlines>>> =
         MutableLiveData()
@@ -38,8 +43,23 @@ class HeadlinesViewModel @Inject constructor(private val repo: IHeadlinesRepo) :
     private fun getNewsHeadlines(articles: List<Article>): List<NewsHeadlines> {
         val listOfheadlines = mutableListOf<NewsHeadlines>()
         articles.forEach {
-            listOfheadlines.add(NewsHeadlines(it.title, it.description, it.author, it.urlToImage))
+            listOfheadlines.add(
+                NewsHeadlines(
+                    it.title,
+                    it.description,
+                    it.author,
+                    it.urlToImage,
+                    it.url
+                )
+            )
         }
         return listOfheadlines
+    }
+
+    fun saveNewsToReadLater(news: News) {
+        viewModelScope.launch {
+            newsDao.insertNews(news)
+        }
+
     }
 }

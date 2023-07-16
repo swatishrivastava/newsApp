@@ -4,5 +4,6 @@ data class NewsHeadlines(
     val title: String,
     val description: String,
     val author: String,
-    val pic: String?
+    val pic: String?,
+    val url: String = ""
 )

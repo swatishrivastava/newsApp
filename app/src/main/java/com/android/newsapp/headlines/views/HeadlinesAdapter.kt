@@ -35,9 +35,11 @@ class HeadlinesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.binding) {
+            headlineLayout.setOnClickListener { onClickListener?.onClick(listOfHeadlines[position].url) }
             articleTitle.text = listOfHeadlines[position].title
             articleDescription.text = listOfHeadlines[position].description
             articleAuthor.text = listOfHeadlines[position].author
+            readLaterText.setOnClickListener { onClickListener?.saveLater(listOfHeadlines[position]) }
             Glide.with(context)
                 .load(listOfHeadlines[position].pic)
                 .into(articleImage);
@@ -46,7 +48,8 @@ class HeadlinesAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(sourceId: String, isSelected: Boolean)
+        fun onClick(url: String)
+        fun saveLater(news: NewsHeadlines)
     }
 
     fun setOnClickListener(onClickListener: OnClickListener) {

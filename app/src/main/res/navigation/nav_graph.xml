@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_source" />
     <fragment
         android:id="@+id/savedArticleFragment"
-        android:name="com.android.newsapp.headlines.HeadlinesFragment"
+        android:name="com.android.newsapp.saved.SavedArticleFragment"
         android:label="@string/saved_articles"
         tools:layout="@layout/fragment_headlines" />
 </navigation>
