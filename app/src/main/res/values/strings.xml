@@ -7,4 +7,6 @@
     <string name="saved_articles">Saved</string>
     <string name="save_later">Read later</string>
     <string name="read_article_later">"Your article saved to read later"</string>
+    <string name="headlines_error">Unable to get headlines, Please try later</string>
+    <string name="source_error">Unable to get sources, Please try later</string>
 </resources>

@@ -7,17 +7,30 @@
     tools:context=".headlines.HeadlinesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/headlines_list"
+        android:id="@+id/news_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
-        android:layout_margin="@dimen/_10dp" />
+        android:layout_margin="@dimen/_10dp"
+        app:layoutManager="LinearLayoutManager" />
 
     <ProgressBar
-        android:id="@+id/headlines_progressBar"
+        android:id="@+id/news_progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <TextView
+        android:id="@+id/error_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

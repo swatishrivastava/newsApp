@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,8 +24,7 @@ import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
 import com.android.newsapp.headlines.views.HeadlinesViewModel
 import com.android.newsapp.saved.repo.News
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_headlines.headlines_list
-import kotlinx.android.synthetic.main.fragment_headlines.headlines_progressBar
+import kotlinx.android.synthetic.main.news_fragment_layout.news_progressBar
 
 
 @AndroidEntryPoint
@@ -34,6 +34,7 @@ class HeadlinesFragment : Fragment() {
     private lateinit var arrOfSources: MutableSet<String>
     private var sourcesStr: String = ""
     private lateinit var headlinesAdapter: HeadlinesAdapter
+    private lateinit var error_textview:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
@@ -43,8 +44,9 @@ class HeadlinesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_headlines, container, false)
-        val recyclerView = view.rootView.findViewById<RecyclerView>(R.id.headlines_list)
+        val view = inflater.inflate(R.layout.news_fragment_layout, container, false)
+        val recyclerView = view.rootView.findViewById<RecyclerView>(R.id.news_list)
+        error_textview = view.rootView.findViewById(R.id.error_textView)
         initializeList(recyclerView)
         return view
     }
@@ -58,18 +60,16 @@ class HeadlinesFragment : Fragment() {
         viewModel.headlinesLiveData.observe(this) {
             when (it) {
                 is Resource.ResourceSuccess -> {
-                    Log.d("test", "*************** onsucces of headlines")
-                    headlines_progressBar.visibility = View.GONE
+                    news_progressBar.visibility = View.GONE
                     headlinesAdapter.updateHeadlines(it.data)
                     handleHeadlineClick()
                 }
-
                 is Resource.ResourceError -> {
-
+                    news_progressBar.visibility = View.GONE
+                    error_textview.visibility = View.VISIBLE
                 }
-
                 is Resource.ResourceLoading -> {
-                    headlines_progressBar.visibility = View.VISIBLE
+                    news_progressBar.visibility = View.VISIBLE
                 }
             }
         }

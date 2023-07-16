@@ -9,7 +9,7 @@ import com.android.newsapp.databinding.SourceListItemBinding
 import com.android.newsapp.sources.domain.NewsSources
 
 class SourceAdapter(
-    private val listOfSources: List<NewsSources>,
+    private var listOfSources: List<NewsSources>,
     private val arrOfSources: MutableSet<String>?
 ) :
     RecyclerView.Adapter<SourceAdapter.ViewHolder>() {
@@ -53,6 +53,12 @@ class SourceAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+
+    fun upDateList(updatedList:List<NewsSources>){
+        listOfSources = emptyList()
+        listOfSources = updatedList
+        notifyDataSetChanged()
     }
 }
 

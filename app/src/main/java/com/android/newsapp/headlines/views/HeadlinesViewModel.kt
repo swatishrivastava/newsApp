@@ -35,7 +35,7 @@ class HeadlinesViewModel @Inject constructor(
                 }
             } else {
                 _headlinesLiveData.value =
-                    Resource.ResourceError(Exception("Unable to get sources"))
+                    Resource.ResourceError(Exception(response.message()))
             }
         }
     }
@@ -46,11 +46,11 @@ class HeadlinesViewModel @Inject constructor(
         articles.forEach {
             listOfheadlines.add(
                 NewsHeadlines(
-                    it.title,
-                    it.description,
-                    it.author,
-                    it.urlToImage,
-                    it.url
+                    title = it.title,
+                    description = it.description,
+                    author = it.author,
+                    pic = it.urlToImage,
+                    url = it.url
                 )
             )
         }

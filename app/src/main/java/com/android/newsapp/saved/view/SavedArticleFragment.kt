@@ -6,18 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.newsapp.HEADLINE_URL
 import com.android.newsapp.R
 import com.android.newsapp.headlines.NewsHeadlines
-import com.android.newsapp.headlines.views.HeadlinesAdapter
 import com.android.newsapp.headlines.views.HeadlinesDetailsActivity
-import com.android.newsapp.saved.repo.News
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_headlines.headlines_list
+import kotlinx.android.synthetic.main.news_fragment_layout.news_list
 
 
 @AndroidEntryPoint
@@ -29,7 +26,7 @@ class SavedArticleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_headlines, container, false)
+        return inflater.inflate(R.layout.news_fragment_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,14 +50,14 @@ class SavedArticleFragment : Fragment() {
                 )
             }
             savedadapter = SavedArticleAdapter(requireContext(), list)
-            headlines_list.adapter = savedadapter
+            news_list.adapter = savedadapter
             handleNewsClick()
 
         }
     }
 
     private fun initializeList() {
-        with(headlines_list) {
+        with(news_list) {
             setHasFixedSize(true)
             val divider = DividerItemDecoration(
                 context,

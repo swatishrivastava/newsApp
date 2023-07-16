@@ -15,19 +15,22 @@ import com.android.newsapp.Resource
 import com.android.newsapp.SELECTED_SOURCES
 import com.android.newsapp.sources.domain.NewsSources
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_source.sources_list
+import kotlinx.android.synthetic.main.news_fragment_layout.error_textView
+import kotlinx.android.synthetic.main.news_fragment_layout.news_list
+import kotlinx.android.synthetic.main.news_fragment_layout.news_progressBar
 
 
 @AndroidEntryPoint
 class SourceFragment : Fragment() {
     private val viewModel: SourcesViewModel by viewModels()
-    private lateinit var adapter: SourceAdapter
+    private lateinit var sourceAdapter: SourceAdapter
     private lateinit var sharedPref: SharedPreferences
-    private lateinit var arrOfSources:MutableSet<String>
+    private lateinit var arrOfSources: MutableSet<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
         arrOfSources = sharedPref.getStringSet(SELECTED_SOURCES, emptySet())!!
+        sourceAdapter = SourceAdapter(emptyList(), arrOfSources)
         viewModel.getSources()
         viewModel.sourceLiveData.observe(this) {
             handleUI(it)
@@ -37,19 +40,19 @@ class SourceFragment : Fragment() {
     private fun handleUI(it: Resource<List<NewsSources>>?) {
         when (it) {
             is Resource.ResourceSuccess -> {
-                adapter = SourceAdapter(it.data, arrOfSources)
-                sources_list.adapter = adapter
-                handleSourceClick()
+                news_progressBar.visibility = View.GONE
+                sourceAdapter.upDateList(it.data)
             }
 
             is Resource.ResourceError -> {
-
+                news_progressBar.visibility = View.GONE
+                error_textView.visibility = View.VISIBLE
+                error_textView.text = getString(R.string.source_error)
             }
 
             is Resource.ResourceLoading -> {
-
+                news_progressBar.visibility = View.VISIBLE
             }
-
             else -> {}
         }
     }
@@ -58,19 +61,19 @@ class SourceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_source, container, false)
+        return inflater.inflate(R.layout.news_fragment_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeList()
-
+        handleSourceClick()
     }
 
     private fun handleSourceClick() {
         val newList = mutableListOf<String>()
         newList.addAll(arrOfSources.toSet())
-        adapter.setOnClickListener(object :
+        sourceAdapter.setOnClickListener(object :
             SourceAdapter.OnClickListener {
             override fun onClick(sourceId: String, isSelected: Boolean) {
                 if (isSelected) {
@@ -87,7 +90,7 @@ class SourceFragment : Fragment() {
     }
 
     private fun initializeList() {
-        with(sources_list) {
+        with(news_list) {
             setHasFixedSize(true)
             val divider = DividerItemDecoration(
                 context,
@@ -95,6 +98,7 @@ class SourceFragment : Fragment() {
             )
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(divider)
+            adapter = sourceAdapter
         }
     }
 }

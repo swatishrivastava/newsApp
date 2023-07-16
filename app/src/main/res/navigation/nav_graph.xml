@@ -9,7 +9,7 @@
         android:id="@+id/headlinesFragment"
         android:name="com.android.newsapp.headlines.HeadlinesFragment"
         android:label="@string/headlines"
-        tools:layout="@layout/fragment_headlines" />
+        tools:layout="@layout/news_list" />
     <fragment
         android:id="@+id/sourceFragment"
         android:name="com.android.newsapp.sources.views.SourceFragment"
@@ -19,5 +19,5 @@
         android:id="@+id/savedArticleFragment"
         android:name="com.android.newsapp.saved.view.SavedArticleFragment"
         android:label="@string/saved_articles"
-        tools:layout="@layout/fragment_headlines" />
+        tools:layout="@layout/news_list" />
 </navigation>
