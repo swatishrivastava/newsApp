@@ -12,6 +12,7 @@ import com.android.newsapp.headlines.network.Article
 import com.android.newsapp.saved.repo.News
 import com.android.newsapp.saved.repo.NewsDao
 import com.android.newsapp.saved.repo.NewsRepository
+import com.android.newsapp.utils.getNewsFromNewsHeadlines
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -28,14 +29,7 @@ class SavedArticleViewModel @Inject constructor(
     val savedHeadlinesLiveData: LiveData<List<News>> = newsRepository.savedNews.asLiveData()
 
     fun deleteNews(newsHeadlines: NewsHeadlines) {
-        val news = News(
-            newsHeadlines.id,
-            newsHeadlines.title,
-            newsHeadlines.description,
-            newsHeadlines.author,
-            newsHeadlines.pic,
-            newsHeadlines.url
-        )
+        val news = getNewsFromNewsHeadlines(newsHeadlines)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 newsRepository.delete(news)

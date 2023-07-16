@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.newsapp.HEADLINE_URL
+import com.android.newsapp.utils.HEADLINE_URL
 import com.android.newsapp.R
 import com.android.newsapp.headlines.NewsHeadlines
 import com.android.newsapp.headlines.views.HeadlinesDetailsActivity

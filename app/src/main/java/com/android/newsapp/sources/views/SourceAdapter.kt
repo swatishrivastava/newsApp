@@ -10,7 +10,7 @@ import com.android.newsapp.sources.domain.NewsSources
 
 class SourceAdapter(
     private var listOfSources: List<NewsSources>,
-    private val arrOfSources: MutableSet<String>?
+    private val arrOfSources: MutableList<String>?
 ) :
     RecyclerView.Adapter<SourceAdapter.ViewHolder>() {
     private var onClickListener: OnClickListener? = null

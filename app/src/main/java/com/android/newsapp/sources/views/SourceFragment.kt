@@ -1,7 +1,5 @@
 package com.android.newsapp.sources.views
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.newsapp.NewsActivity
 import com.android.newsapp.R
 import com.android.newsapp.Resource
-import com.android.newsapp.SELECTED_SOURCES
 import com.android.newsapp.sources.domain.NewsSources
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.news_fragment_layout.error_textView
@@ -24,13 +22,10 @@ import kotlinx.android.synthetic.main.news_fragment_layout.news_progressBar
 class SourceFragment : Fragment() {
     private val viewModel: SourcesViewModel by viewModels()
     private lateinit var sourceAdapter: SourceAdapter
-    private lateinit var sharedPref: SharedPreferences
-    private lateinit var arrOfSources: MutableSet<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
-        arrOfSources = sharedPref.getStringSet(SELECTED_SOURCES, emptySet())!!
-        sourceAdapter = SourceAdapter(emptyList(), arrOfSources)
+        sourceAdapter = SourceAdapter(emptyList(), (activity as NewsActivity).sourceArray)
         viewModel.getSources()
         viewModel.sourceLiveData.observe(this) {
             handleUI(it)
@@ -53,6 +48,7 @@ class SourceFragment : Fragment() {
             is Resource.ResourceLoading -> {
                 news_progressBar.visibility = View.VISIBLE
             }
+
             else -> {}
         }
     }
@@ -71,19 +67,13 @@ class SourceFragment : Fragment() {
     }
 
     private fun handleSourceClick() {
-        val newList = mutableListOf<String>()
-        newList.addAll(arrOfSources.toSet())
         sourceAdapter.setOnClickListener(object :
             SourceAdapter.OnClickListener {
             override fun onClick(sourceId: String, isSelected: Boolean) {
-                if (isSelected) {
-                    newList.add(sourceId)
+                if (isSelected && !(activity as NewsActivity).sourceArray.contains(sourceId)) {
+                    (activity as NewsActivity).sourceArray.add(sourceId)
                 } else {
-                    newList.remove(sourceId)
-                }
-                with(sharedPref.edit()) {
-                    this?.putStringSet(SELECTED_SOURCES, newList.toSet())
-                    this?.apply()
+                    (activity as NewsActivity).sourceArray.remove(sourceId)
                 }
             }
         })

@@ -2,7 +2,7 @@ package com.android.newsapp.headlines.views
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.android.newsapp.HEADLINE_URL
+import com.android.newsapp.utils.HEADLINE_URL
 import com.android.newsapp.R
 import kotlinx.android.synthetic.main.activity_headlines_details.show_headlines_details
 
