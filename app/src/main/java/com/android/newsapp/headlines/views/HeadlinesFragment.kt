@@ -46,11 +46,14 @@ class HeadlinesFragment : Fragment() {
         viewModel.headlinesLiveData.observe(this) {
             when (it) {
                 is Resource.ResourceSuccess -> {
+
                     updateSuccessUi(it)
                 }
+
                 is Resource.ResourceError -> {
                     updateErrorUi()
                 }
+
                 is Resource.ResourceLoading -> {
                     news_progressBar.visibility = View.VISIBLE
                 }
@@ -60,7 +63,13 @@ class HeadlinesFragment : Fragment() {
 
     private fun updateSuccessUi(it: Resource.ResourceSuccess<List<NewsHeadlines>>) {
         news_progressBar.visibility = View.GONE
-        headlinesAdapter.updateHeadlines(it.data)
+        if (it.data.isEmpty()) {
+            errorTextview.visibility = View.VISIBLE
+            errorTextview.text = getString(R.string.no_news)
+        } else {
+            headlinesAdapter.updateHeadlines(it.data)
+        }
+
     }
 
     private fun updateErrorUi() {

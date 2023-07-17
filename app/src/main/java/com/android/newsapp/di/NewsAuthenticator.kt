@@ -8,7 +8,7 @@ class NewsAuthenticator @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val builder = request.newBuilder()
-        builder.addHeader("X-Api-Key", "0c75fdf2d9ab4fc1862ff8d83097eda2")
+        builder.addHeader("X-Api-Key", "14a8301e38c74ec18ba091acdb18f32a")
         return chain.proceed(builder.build())
     }
 
